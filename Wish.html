@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colorful Animated Background</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    /* Background */
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating Particles */
+    .particle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: particleMove linear infinite;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    @keyframes particleMove {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0;
+      }
+      50% {
+        transform: translate(var(--x), var(--y)) scale(1.5);
+        opacity: 0.5;
+      }
+      100% {
+        transform: translate(var(--x), var(--y)) scale(2);
+        opacity: 0;
+      }
+    }
+
+    /* Fullscreen Video Wrapper */
+    .video-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    video {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Emoji Animation */
+    .emoji {
+      position: absolute;
+      font-size: 40px;
+      animation: emojiPop 4s ease-out forwards;
+      z-index: 4;
+      pointer-events: none;
+    }
+
+    @keyframes emojiPop {
+      0% { transform: scale(0) rotate(0deg); opacity: 1; }
+      50% { transform: scale(1.5) rotate(180deg); opacity: 0.8; }
+      100% { transform: scale(0) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="background"></div>
+
+  <!-- Fullscreen Video -->
+  <div class="video-wrapper">
+    <video src="Khushi2 - Made with Clipchamp.mp4" controls autoplay muted playsinline></video>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Video volume boost (unmute if autoplay succeeds)
+    const video = document.querySelector("video");
+    video.muted = false;
+    video.volume = 0.8;
+
+    // Generate floating particles dynamically
+    for (let i = 0; i < 20; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.setProperty('--x', `${(Math.random() - 0.5) * 800}px`);
+      p.style.setProperty('--y', `${(Math.random() - 0.5) * 800}px`);
+      p.style.left = `${Math.random() * window.innerWidth}px`;
+      p.style.top = `${Math.random() * window.innerHeight}px`;
+      p.style.animationDuration = `${3 + Math.random() * 3}s`;
+      document.body.appendChild(p);
+    }
+
+    // Emoji pop-up animation
+    const emojis = ['😊', '🎉', '🌸', '💖', '✨', '💫', '🌟'];
+
+    function createRandomEmoji() {
+      const emoji = document.createElement('div');
+      emoji.classList.add('emoji');
+      emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      emoji.style.left = `${Math.random() * window.innerWidth}px`;
+      emoji.style.top = `${Math.random() * window.innerHeight}px`;
+      emoji.style.animationDelay = `${Math.random()}s`;
+      emoji.style.transform = `rotate(${Math.random() * 360}deg)`;
+      document.body.appendChild(emoji);
+      setTimeout(() => emoji.remove(), 4000);
+    }
+
+    setInterval(createRandomEmoji, 800);
+  </script>
+
+</body>
+</html>
